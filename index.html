@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voiz — Aspirasi Mahasiswa</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    /* ── Hero ──────────────────────────────────────────────── */
+    .hero {
+      min-height: calc(100vh - 64px);
+      display: grid;
+      place-items: center;
+      padding: 4rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated background orbs */
+    .hero::before, .hero::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .hero::before {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(245,166,35,.12) 0%, transparent 70%);
+      top: 10%; left: 10%;
+      animation: float1 8s ease-in-out infinite;
+    }
+    .hero::after {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(79,142,247,.10) 0%, transparent 70%);
+      bottom: 10%; right: 10%;
+      animation: float2 10s ease-in-out infinite;
+    }
+    @keyframes float1 {
+      0%,100% { transform: translate(0,0); }
+      50%      { transform: translate(40px, 30px); }
+    }
+    @keyframes float2 {
+      0%,100% { transform: translate(0,0); }
+      50%      { transform: translate(-30px, -20px); }
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 680px; }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .3rem 1rem;
+      background: var(--accent-glow);
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      color: var(--accent);
+      font-size: .82rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 { margin-bottom: 1.2rem; }
+    .hero h1 em {
+      color: var(--accent);
+      font-style: normal;
+      position: relative;
+    }
+    .hero h1 em::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      opacity: .4;
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Stats Strip ───────────────────────────────────────── */
+    .stats-strip {
+      display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+      padding: 2.5rem 2rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.2rem; font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat-label { font-size: .82rem; color: var(--text-muted); margin-top: .3rem; }
+
+    /* ── Features ──────────────────────────────────────────── */
+    .features {
+      max-width: 1100px; margin: 0 auto; padding: 5rem 2rem;
+    }
+    .section-heading {
+      text-align: center; margin-bottom: 3rem;
+    }
+    .section-heading p { color: var(--text-muted); margin-top: .5rem; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+    .feature-card {
+      padding: 1.75rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color .25s, transform .25s;
+    }
+    .feature-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+    .feature-icon {
+      width: 44px; height: 44px;
+      background: var(--accent-glow);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--accent);
+    }
+    .feature-card h3 { margin-bottom: .4rem; }
+    .feature-card p  { color: var(--text-muted); font-size: .9rem; }
+
+    /* ── CTA Banner ────────────────────────────────────────── */
+    .cta-banner {
+      margin: 0 2rem 5rem;
+      max-width: 1100px;
+      margin-left: auto; margin-right: auto;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, rgba(245,166,35,.08) 0%, rgba(79,142,247,.08) 100%);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      text-align: center;
+    }
+    .cta-banner h2 { margin-bottom: .8rem; }
+    .cta-banner p { color: var(--text-muted); margin-bottom: 1.8rem; }
+
+    /* ── Footer ────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: .82rem;
+    }
+    footer strong { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<!-- Page Loader -->
+<div id="page-loader">
+  <div class="spinner" style="width:32px;height:32px;border-width:3px;"></div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-brand">🎤 <span>Voiz</span></div>
+
+  <ul class="navbar-links">
+    <li><a href="index.html" class="active">Beranda</a></li>
+    <li><a href="dashboard.html">Aspirasi</a></li>
+  </ul>
+
+  <div class="navbar-actions" id="navActions">
+    <!-- Diisi oleh JS sesuai status login -->
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">✦ Platform Aspirasi Digital</div>
+    <h1>Suaramu <em>Penting</em>,<br>Kami Pastikan Didengar</h1>
+    <p class="hero-desc">
+      Voiz adalah ruang digital bagi mahasiswa untuk menyampaikan aspirasi
+      dan pengaduan secara terstruktur — anonim maupun terbuka — agar
+      ditindaklanjuti secara transparan oleh pihak kampus.
+    </p>
+    <div class="hero-actions">
+      <a href="kirim-aspirasi.html" class="btn btn-primary btn-lg">✍️ Kirim Aspirasi</a>
+      <a href="dashboard.html"      class="btn btn-ghost btn-lg">📋 Lihat Semua Aspirasi</a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats-strip" id="statsStrip">
+  <div class="stat-item">
+    <div class="stat-num" id="statTotal">—</div>
+    <div class="stat-label">Total Aspirasi</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statSelesai">—</div>
+    <div class="stat-label">Ditangani</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statMahasiswa">—</div>
+    <div class="stat-label">Mahasiswa Aktif</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">3</div>
+    <div class="stat-label">Kategori Utama</div>
+  </div>
+</div>
+
+<!-- Features -->
+<section class="features">
+  <div class="section-heading">
+    <h2>Kenapa Voiz?</h2>
+    <p>Satu platform untuk semua kebutuhan aspirasi mahasiswa</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🎭</div>
+      <h3>Mode Anonim</h3>
+      <p>Sampaikan pendapat tanpa khawatir identitasmu terungkap. Privasi adalah hak.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🗳️</div>
+      <h3>Sistem Voting</h3>
+      <p>Dukung aspirasi yang menurutmu penting. Aspirasi populer diprioritaskan.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📡</div>
+      <h3>Status Real-time</h3>
+      <p>Pantau perkembangan aspirasimu dari diterima hingga selesai ditangani.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Dashboard Admin</h3>
+      <p>Pimpinan dan BEM memantau semua aspirasi lewat dasbor statistik yang komprehensif.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🗂️</div>
+      <h3>Kategori Terstruktur</h3>
+      <p>Akademik, fasilitas, sosial — aspirasi tersortir agar mudah ditindaklanjuti.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔔</div>
+      <h3>Notifikasi</h3>
+      <p>Terima pemberitahuan ketika status aspirasimu diperbarui oleh admin.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Banner -->
+<div class="cta-banner">
+  <h2>Siap Menyuarakan Aspirasimu?</h2>
+  <p>Bergabunglah bersama ratusan mahasiswa yang sudah menggunakan Voiz</p>
+  <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+    <a href="register.html" class="btn btn-primary btn-lg">Daftar Sekarang — Gratis</a>
+    <a href="login.html"    class="btn btn-ghost btn-lg">Sudah punya akun? Login</a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>© 2025 <strong>Voiz</strong> — Platform Aspirasi Mahasiswa. Dibuat dengan ❤️ untuk kemajuan kampus.</p>
+</footer>
+
+<script src="js/api.js"></script>
+<script>
+  // Page loader
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const loader = document.getElementById('page-loader');
+      if (loader) loader.classList.add('hidden');
+    }, 400);
+  });
+
+  // Navbar actions
+  const navActions = document.getElementById('navActions');
+  if (Auth.isLoggedIn()) {
+    const user = Auth.getUser();
+    navActions.innerHTML = `
+      <span style="font-size:.85rem;color:var(--text-muted);">Hi, ${user?.nama?.split(' ')[0] || 'User'}</span>
+      <a href="${user?.role === 'admin' ? 'admin.html' : 'dashboard.html'}" class="btn btn-ghost btn-sm">Dashboard</a>
+      <button class="btn btn-ghost btn-sm" onclick="Auth.clear();location.reload()">Keluar</button>
+    `;
+  } else {
+    navActions.innerHTML = `
+      <a href="login.html"    class="btn btn-ghost btn-sm">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm">Daftar</a>
+    `;
+  }
+
+  // Load stats
+  (async () => {
+    try {
+      const res = await api.get('/admin/stats');
+      if (res?.success) {
+        const s = res.data.statusStats.reduce((acc, row) => {
+          acc[row.status] = row.total; return acc;
+        }, {});
+        document.getElementById('statTotal').textContent = res.data.total ?? '—';
+        document.getElementById('statSelesai').textContent = s['selesai'] ?? 0;
+        document.getElementById('statMahasiswa').textContent = res.data.totalUser ?? '—';
+      }
+    } catch (_) {}
+  })();
+</script>
+
+</body>
+</html>

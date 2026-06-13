@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — Voiz</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/auth.css"/>
+</head>
+<body class="auth-page">
+
+<div class="auth-wrapper">
+  <!-- Left panel -->
+  <div class="auth-panel-left">
+    <div class="auth-brand">🎤 Voiz</div>
+    <h2>Selamat datang kembali.</h2>
+    <p>Masuk untuk memantau aspirasi, memberikan vote, dan melihat perkembangan terkini dari kampus.</p>
+    <div class="auth-decor">
+      <div class="decor-card">
+        <span class="badge badge-selesai">✔ selesai</span>
+        <p>"Perbaikan AC Ruang C3 sudah diproses!"</p>
+      </div>
+      <div class="decor-card">
+        <span class="badge badge-diproses">⚙ diproses</span>
+        <p>"Sistem absensi online sedang dikembangkan."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right panel — form -->
+  <div class="auth-panel-right">
+    <div class="auth-form-box">
+      <h3>Login ke Voiz</h3>
+      <p class="auth-sub">Belum punya akun? <a href="register.html">Daftar di sini</a></p>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="email" class="form-control" placeholder="email@kampus.ac.id" required/>
+        </div>
+
+        <div class="form-group" style="margin-top:1rem;">
+          <label class="form-label">Password</label>
+          <div class="input-eye">
+            <input type="password" id="password" class="form-control" placeholder="••••••••" required/>
+            <button type="button" class="eye-btn" onclick="togglePwd()">👁</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full" style="margin-top:1.5rem;" id="loginBtn">
+          Masuk
+        </button>
+      </form>
+
+      <div id="errorBox" class="auth-error" style="display:none;"></div>
+
+      <!-- Demo credentials -->
+      <div class="demo-hint">
+        <p>Demo: <code>admin@voiz.id</code> / <code>admin123</code></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+  // Redirect jika sudah login
+  if (Auth.isLoggedIn()) {
+    const role = Auth.getUser()?.role;
+    window.location.href = role === 'admin' ? 'admin.html' : 'dashboard.html';
+  }
+
+  function togglePwd() {
+    const inp = document.getElementById('password');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('loginBtn');
+    const errBox = document.getElementById('errorBox');
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Memproses…';
+    errBox.style.display = 'none';
+
+    const res = await api.post('/auth/login', {
+      email:    document.getElementById('email').value,
+      password: document.getElementById('password').value,
+    });
+
+    if (res?.success) {
+      Auth.save(res.token, res.user);
+      toast('Login berhasil! Mengalihkan…', 'success');
+      setTimeout(() => {
+        window.location.href = res.user.role === 'admin' ? 'admin.html' : 'dashboard.html';
+      }, 800);
+    } else {
+      errBox.textContent = res?.message || 'Login gagal.';
+      errBox.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Masuk';
+    }
+  });
+</script>
+</body>
+</html>
