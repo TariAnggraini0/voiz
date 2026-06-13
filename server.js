@@ -14,7 +14,10 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Routes API
-app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/aspirasi', require('./routes/aspirasi'));
+app.use('/api/admin', require('./routes/admin'));
+app.use('/api/voting', require('./routes/voting'));
 
 // Fallback ke index.html
 app.get('*', (req, res) => {
