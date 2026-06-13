@@ -10,8 +10,8 @@ const PORT = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 
-// Serve frontend
-app.use(express.static(path.join(__dirname, '../frontend')));
+// Serve frontend dari root repo
+app.use(express.static(path.join(__dirname)));
 
 // Routes API
 app.use('/api/auth', require('./routes/auth'));
@@ -21,7 +21,7 @@ app.use('/api/voting', require('./routes/voting'));
 
 // Fallback ke index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(PORT, () => {
