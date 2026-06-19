@@ -3,23 +3,25 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const db = require('./config/db');
+
 const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json());
 
-// Routes API
+// Routes API dulu sebelum static
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/aspirasi', require('./routes/aspirasi'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/voting', require('./routes/voting'));
 
-// Serve semua file statis
-app.use(express.static(__dirname));
+// Serve static files
+app.use(express.static(path.join(__dirname)));
 
-// Fallback
-app.get('*', (req, res) => {
+// Fallback HANYA untuk route tanpa ekstensi
+app.use((req, res, next) => {
+  if (req.path.includes('.')) return next();
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
