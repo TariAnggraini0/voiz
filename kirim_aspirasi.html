@@ -488,12 +488,7 @@ async function handleSubmit(e) {
 // ─────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
-
-  if (!Auth.isLoggedIn()) {
-    renderLoginWall();
-  } else {
-    renderForm();
-  }
+  renderForm();
 });
 </script>
 
