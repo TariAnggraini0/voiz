@@ -20,10 +20,15 @@ app.use('/api/admin', require('./routes/admin'));
 app.use('/api/voting', require('./routes/voting'));
 
 app.get('*', (req, res) => {
-  const filePath = path.join(__dirname, req.path);
-  res.sendFile(filePath, (err) => {
-    if (err) res.sendFile(path.join(__dirname, 'index.html'));
-  });
+  // Kalau ada ekstensi file (.html, .css, .js, dll), serve file itu
+  if (path.extname(req.path)) {
+    res.sendFile(path.join(__dirname, req.path), (err) => {
+      if (err) res.status(404).send('Not found');
+    });
+  } else {
+    // Kalau tidak ada ekstensi, fallback ke index.html
+    res.sendFile(path.join(__dirname, 'index.html'));
+  }
 });
 
 app.listen(PORT, () => {
