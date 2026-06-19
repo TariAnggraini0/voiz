@@ -63,6 +63,11 @@
 <script>
 let selectedKat = null;
 
+// TAMBAH INI ↓
+if (!localStorage.getItem('voiz_token')) {
+  window.location.href = 'login.html?redirect=kirim-aspirasi.html';
+}
+
 function pilihKat(id, el) {
   document.querySelectorAll('#kategoriGrid button').forEach(b => {
     b.style.borderColor = '#444';
