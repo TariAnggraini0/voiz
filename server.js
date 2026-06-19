@@ -19,9 +19,11 @@ app.use('/api/aspirasi', require('./routes/aspirasi'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/voting', require('./routes/voting'));
 
-// Fallback ke index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  const filePath = path.join(__dirname, req.path);
+  res.sendFile(filePath, (err) => {
+    if (err) res.sendFile(path.join(__dirname, 'index.html'));
+  });
 });
 
 app.listen(PORT, () => {
