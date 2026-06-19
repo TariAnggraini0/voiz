@@ -92,9 +92,15 @@
     if (res?.success) {
       Auth.save(res.token, res.user);
       toast('Login berhasil! Mengalihkan…', 'success');
-      setTimeout(() => {
-        window.location.href = res.user.role === 'admin' ? 'admin.html' : 'dashboard.html';
-      }, 800);
+     setTimeout(() => {
+  if (res.user.role === 'admin') {
+    window.location.href = 'admin.html';
+  } else {
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get('redirect') || 'dashboard.html';
+    window.location.href = redirect;
+  }
+}, 800);
     } else {
       errBox.textContent = res?.message || 'Login gagal.';
       errBox.style.display = 'block';
