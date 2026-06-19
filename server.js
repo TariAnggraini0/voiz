@@ -16,18 +16,13 @@ app.use('/api/aspirasi', require('./routes/aspirasi'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/voting', require('./routes/voting'));
 
-// Serve file HTML satu per satu
-app.get('/kirim-aspirasi.html', (req, res) => res.sendFile(path.join(__dirname, 'kirim-aspirasi.html')));
-app.get('/dashboard.html', (req, res) => res.sendFile(path.join(__dirname, 'dashboard.html')));
-app.get('/login.html', (req, res) => res.sendFile(path.join(__dirname, 'login.html')));
-app.get('/register.html', (req, res) => res.sendFile(path.join(__dirname, 'register.html')));
-app.get('/admin.html', (req, res) => res.sendFile(path.join(__dirname, 'admin.html')));
+// Static assets
+app.use(express.static('/app'));
 
-// Static assets (css, js)
-app.use(express.static(path.join(__dirname)));
-
-// Root
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+// Fallback
+app.get('*', (req, res) => {
+  res.sendFile('/app/index.html');
+});
 
 app.listen(PORT, () => {
   console.log(`Server aktif di port ${PORT}`);
