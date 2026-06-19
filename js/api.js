@@ -4,7 +4,7 @@
 //  Otomatis menyisipkan Authorization header dari localStorage
 // ─────────────────────────────────────────────────────────────
 
-const API_BASE = 'http://voiz-production.up.railway.app/api';
+const API_BASE = 'https://voiz-production.up.railway.app/api';
 
 // ── Token helpers ─────────────────────────────────────────
 const Auth = {
